@@ -227,8 +227,11 @@ var X509Group = function(certFactory) {
       }
     };
 
-    provisioningServiceClient.deleteEnrollmentGroup(enrollmentGroup.enrollmentGroupId, function() {
+    provisioningServiceClient.deleteEnrollmentGroup(enrollmentGroup.enrollmentGroupId, function(attemptToCleanupError) {
       // ignore delete error.  We're just cleaning up from a previous run.
+      if (attemptToCleanupError) {
+        debug('Error returned from cleanup of the enrollment group prior to (re)creating it: ' + attemptToCleanupError.name);
+      }
       provisioningServiceClient.createOrUpdateEnrollmentGroup(enrollmentGroup, function(err) {
         if (err) {
           callback(err);
@@ -260,7 +263,7 @@ var X509Group = function(certFactory) {
       debug('deleting enrollment group');
       provisioningServiceClient.deleteEnrollmentGroup(self._groupId, function(err) {
         if (err) {
-          debug('ignoring deleteEnrollmentGroup error');
+          debug('ignoring deleteEnrollmentGroup error, it was named: ' + err.name);
         }
         debug('done with group cleanup');
         callback();
@@ -411,7 +414,7 @@ var SymmetricKeyIndividual = function() {
     debug('deleting enrollment');
     provisioningServiceClient.deleteIndividualEnrollment(self.registrationId, function (err) {
       if (err) {
-        debug('ignoring deleteIndividualEnrollment error');
+        debug('ignoring deleteIndividualEnrollment error, it is named: ' + err.name);
       }
       debug('deleting device');
       registry.delete(self.deviceId, function (err) {
@@ -490,7 +493,7 @@ var SymmetricKeyGroup = function() {
     debug('deleting enrollment');
     provisioningServiceClient.deleteEnrollmentGroup(self.groupId, function (err) {
       if (err) {
-        debug('ignoring deleteEnrollmentGroup error');
+        debug('ignoring deleteEnrollmentGroup error, it is named: ' + err.name);
       }
       debug('deleting device');
       registry.delete(self.deviceId, function (err) {
