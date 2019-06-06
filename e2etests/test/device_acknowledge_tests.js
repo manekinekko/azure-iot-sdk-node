@@ -61,7 +61,7 @@ function device_acknowledgment_tests (deviceTransport, createDeviceMethod) {
     });
 
     it('Service sends 1 C2D message and it is re-sent until completed', function (done) {
-      this.timeout(15000);
+      this.timeout(60000);
       var guid = uuid.v4();
       var deviceClientParticipant = 'deviceClient';
       var serviceClientParticipant = 'serviceClient';
@@ -147,7 +147,7 @@ function device_acknowledgment_tests (deviceTransport, createDeviceMethod) {
     });
 
     it('Service sends 1 C2D message and it is re-sent until rejected', function (done) {
-      this.timeout(15000);
+      this.timeout(60000);
       var guid = uuid.v4();
       var deviceClientParticipant = 'deviceClient';
       var serviceClientParticipant = 'serviceClient';
