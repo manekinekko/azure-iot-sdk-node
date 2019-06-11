@@ -20,11 +20,11 @@ var hubConnectionString = process.env.IOTHUB_CONNECTION_STRING;
 
 [
   DeviceIdentityHelper.createDeviceWithSas,
-  DeviceIdentityHelper.createDeviceWithSymmetricKey,
-  DeviceIdentityHelper.createDeviceWithX509SelfSignedCert
+  DeviceIdentityHelper.createDeviceWithSymmetricKey
+  // DeviceIdentityHelper.createDeviceWithX509SelfSignedCert
 ].forEach(function (createDeviceMethod) {
   [
-    deviceHttp.Http,
+    // deviceHttp.Http,
     deviceAmqp.Amqp,
     deviceAmqp.AmqpWs
   ].forEach(function (deviceTransport) {
