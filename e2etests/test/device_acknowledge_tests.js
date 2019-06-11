@@ -32,7 +32,7 @@ var hubConnectionString = process.env.IOTHUB_CONNECTION_STRING;
   });
 });
 
-device_acknowledgment_tests(deviceAmqp.Amqp, DeviceIdentityHelper.createDeviceWithX509CASignedCert);
+device_acknowledgment_tests(deviceAmqp.Amqp);
 
 function device_acknowledgment_tests (deviceTransport, createDeviceMethod) {
   describe('Over ' + deviceTransport.name + ' using ' + createDeviceMethod.name, function () {
