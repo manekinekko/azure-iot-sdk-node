@@ -59,7 +59,6 @@ export class Amqp extends EventEmitter implements DeviceTransport {
   private _c2dLink: ReceiverLink;
   private _d2cLink: SenderLink;
   private _options: DeviceClientOptions;
-  private _customUserAgentString: string;
 
   private _c2dErrorListener: (err: Error) => void;
   private _c2dMessageListener: (msg: AmqpMessage) => void;
@@ -281,8 +280,8 @@ export class Amqp extends EventEmitter implements DeviceTransport {
                 }
 
                 getUserAgentString((userAgentString) => {
-                  if (this._customUserAgentString) {
-                      userAgentString += this._customUserAgentString;
+                  if (this._options.productInfo) {
+                      userAgentString += this._options.productInfo;
                   }
                   const config: AmqpBaseTransportConfig = {
                     uri: this._getConnectionUri(credentials),
@@ -686,13 +685,6 @@ export class Amqp extends EventEmitter implements DeviceTransport {
       }
     }
 
-    if (options.hasOwnProperty('productInfo')) {
-      if (typeof(options.productInfo) === 'string') {
-        this._customUserAgentString = options.productInfo;
-      } else {
-        throw new errors.InvalidOperationError('productInfo must be set as a string');
-      }
-    }
 
     /*Codes_SRS_NODE_DEVICE_AMQP_13_001: [ The setOptions method shall save the options passed in. ]*/
     this._options = options;
