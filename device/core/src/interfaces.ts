@@ -115,7 +115,7 @@ export interface DeviceClientOptions extends X509 {
   /**
    * Custom User Agent Option 
    */
-  productinfo?: string;
+  productInfo?: string;
   /**
    * Optional object with options specific to the MQTT transport
    */
