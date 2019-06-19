@@ -59,6 +59,7 @@ export class Amqp extends EventEmitter implements DeviceTransport {
   private _c2dLink: ReceiverLink;
   private _d2cLink: SenderLink;
   private _options: DeviceClientOptions;
+  private _customUserAgentString: string;
 
   private _c2dErrorListener: (err: Error) => void;
   private _c2dMessageListener: (msg: AmqpMessage) => void;
@@ -280,6 +281,9 @@ export class Amqp extends EventEmitter implements DeviceTransport {
                 }
 
                 getUserAgentString((userAgentString) => {
+                  if (this._customUserAgentString) {
+                      userAgentString += this._customUserAgentString;
+                  }
                   const config: AmqpBaseTransportConfig = {
                     uri: this._getConnectionUri(credentials),
                     sslOptions: credentials.x509,
@@ -679,6 +683,14 @@ export class Amqp extends EventEmitter implements DeviceTransport {
       } else {
         /*Codes_SRS_NODE_DEVICE_AMQP_16_053: [The `setOptions` method shall throw an `InvalidOperationError` if the method is called while using token-based authentication.]*/
         throw new errors.InvalidOperationError('cannot set X509 options when using token-based authentication');
+      }
+    }
+
+    if (options.hasOwnProperty('productInfo')) {
+      if (typeof(options.productInfo) === 'string') {
+        this._customUserAgentString = options.productInfo;
+      } else {
+        throw new errors.InvalidOperationError('productInfo must be set as a string');
       }
     }
 

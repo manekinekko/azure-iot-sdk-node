@@ -72,6 +72,7 @@ export class Http extends EventEmitter implements DeviceTransport {
   private _timeoutObj: number;
   private _receiverStarted: boolean;
   private _userAgentString: string;
+  private _customUserAgentString: string;
 
   /**
    * @private
@@ -161,7 +162,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           const path = endpoint.deviceEventPath(encodeUriComponentStrict(config.deviceId));
           let httpHeaders = {
             'iothub-to': path,
-            'User-Agent': this._userAgentString
+            'User-Agent': this._userAgentString + this._customUserAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -293,7 +294,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           let httpHeaders = {
             'iothub-to': path,
             'Content-Type': 'application/vnd.microsoft.iothub.json',
-            'User-Agent': this._userAgentString
+            'User-Agent': this._userAgentString + this._customUserAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -323,6 +324,11 @@ export class Http extends EventEmitter implements DeviceTransport {
         key: options.key,
         passphrase: options.passphrase
       });
+    }
+
+    if (options.hasOwnProperty('productInfo')) {
+      // According to CUA Spec: "Store the entire string in the User-Agent HTTP header"
+      this._customUserAgentString = options.productInfo;
     }
 
     /*Codes_SRS_NODE_DEVICE_HTTP_16_010: [`setOptions` should not throw if `done` has not been specified.]*/
@@ -373,7 +379,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           const path = endpoint.deviceMessagePath(encodeUriComponentStrict(config.deviceId));
           let httpHeaders = {
             'iothub-to': path,
-            'User-Agent': this._userAgentString
+            'User-Agent': this._userAgentString + this._customUserAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -660,7 +666,7 @@ export class Http extends EventEmitter implements DeviceTransport {
         let path = endpoint.deviceFeedbackPath(encodeUriComponentStrict(config.deviceId), message.lockToken);
         let httpHeaders = {
           'If-Match': message.lockToken,
-          'User-Agent': this._userAgentString
+          'User-Agent': this._userAgentString + this._customUserAgentString
         };
 
         this._insertAuthHeaderIfNecessary(httpHeaders, config);

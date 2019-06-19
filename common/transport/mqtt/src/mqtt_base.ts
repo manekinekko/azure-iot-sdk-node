@@ -229,6 +229,10 @@ export class MqttBase extends EventEmitter {
           agent: this._options.mqtt.webSocketAgent
         };
       }
+      if (this._options.productInfo) {
+        // According to CUA Spec: "Append entire string to Username field in CONNECT packet" 
+        options.username += this._options.productInfo
+      }
     }
     if (this._config.sharedAccessSignature) {
       options.password = this._config.sharedAccessSignature.toString();
