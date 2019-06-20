@@ -870,9 +870,14 @@ describe('Amqp', function () {
       });
 
       /*Tests_SRS_NODE_DEVICE_AMQP_13_001: [ The setOptions method shall save the options passed in. ]*/
-      it('saves options', function () {
+      it('saves CA options', function () {
         transport.setOptions({ ca: 'ca cert' });
         assert.strictEqual(transport._options.ca, 'ca cert');
+      });
+
+      it('saves productInfo options', function () {
+        transport.setOptions({ productInfo: 'customer user agent information' });
+        assert.strictEqual(transport._options.productInfo, 'customer user agent information');
       });
     });
 
