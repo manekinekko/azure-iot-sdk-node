@@ -68,11 +68,11 @@ export class Http extends EventEmitter implements DeviceTransport {
   private _http: Base;
   private _opts: HttpReceiverOptions;
   private _cronObj: any;
-  private _intervalObj: number;
-  private _timeoutObj: number;
+  private _intervalObj: NodeJS.Timer;
+  private _timeoutObj: NodeJS.Timer;
   private _receiverStarted: boolean;
   private _userAgentString: string;
-  private _customUserAgentString: string;
+  private _productInfo: string; // this is the custom user agent string
 
   /**
    * @private
@@ -162,7 +162,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           const path = endpoint.deviceEventPath(encodeUriComponentStrict(config.deviceId));
           let httpHeaders = {
             'iothub-to': path,
-            'User-Agent': this._userAgentString + this._customUserAgentString
+            'User-Agent': this._userAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -294,7 +294,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           let httpHeaders = {
             'iothub-to': path,
             'Content-Type': 'application/vnd.microsoft.iothub.json',
-            'User-Agent': this._userAgentString + this._customUserAgentString
+            'User-Agent': this._userAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -327,8 +327,8 @@ export class Http extends EventEmitter implements DeviceTransport {
     }
 
     if (options.hasOwnProperty('productInfo')) {
-      // According to CUA Spec: "Store the entire string in the User-Agent HTTP header"
-      this._customUserAgentString = options.productInfo;
+      // According to Custom User Agent Spec: "Store the entire string in the User-Agent HTTP header"
+      this._productInfo = options.productInfo;
     }
 
     /*Codes_SRS_NODE_DEVICE_HTTP_16_010: [`setOptions` should not throw if `done` has not been specified.]*/
@@ -379,7 +379,7 @@ export class Http extends EventEmitter implements DeviceTransport {
           const path = endpoint.deviceMessagePath(encodeUriComponentStrict(config.deviceId));
           let httpHeaders = {
             'iothub-to': path,
-            'User-Agent': this._userAgentString + this._customUserAgentString
+            'User-Agent': this._userAgentString
           };
 
           this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -666,7 +666,7 @@ export class Http extends EventEmitter implements DeviceTransport {
         let path = endpoint.deviceFeedbackPath(encodeUriComponentStrict(config.deviceId), message.lockToken);
         let httpHeaders = {
           'If-Match': message.lockToken,
-          'User-Agent': this._userAgentString + this._customUserAgentString
+          'User-Agent': this._userAgentString
         };
 
         this._insertAuthHeaderIfNecessary(httpHeaders, config);
@@ -792,7 +792,7 @@ export class Http extends EventEmitter implements DeviceTransport {
     if (this._userAgentString) {
       done();
     } else {
-      getUserAgentString((agent) => {
+      getUserAgentString(this._productInfo, (agent) => {
         this._userAgentString = agent;
         done();
       });

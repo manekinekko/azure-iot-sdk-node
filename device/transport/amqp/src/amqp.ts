@@ -279,9 +279,9 @@ export class Amqp extends EventEmitter implements DeviceTransport {
                   this._messageEventName = 'message';
                 }
 
-                getUserAgentString((userAgentString) => {
+                getUserAgentString(this._options.productInfo, (userAgentString) => {
                   if (this._options.productInfo) {
-                      userAgentString += this._options.productInfo;
+                      userAgentString;
                   }
                   const config: AmqpBaseTransportConfig = {
                     uri: this._getConnectionUri(credentials),
