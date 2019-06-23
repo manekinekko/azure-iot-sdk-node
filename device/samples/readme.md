@@ -48,7 +48,7 @@ $ npm install
 $ node sample_file.js
 ```
 
-* In order to monitor and interact with the sample, you can use the [iothub-explorer][iothub-explorer] utility which can be used to display the messages sent by the device, send messages back to the device, interact with the device Twin, or invoke a C2D Direct Method on the device.
+* In order to monitor and interact with the sample, you can use the [azure-iot-cli-extension][azure-iot-cli-extension] utility which can be used to display the messages sent by the device, send messages back to the device, interact with the device Twin, or invoke a C2D Direct Method on the device.
 
 
 ## Read More
@@ -58,13 +58,13 @@ For more information on how to use this library refer to the documents below:
 - [Provision devices][lnk-manage-iot-hub]
 - [Node API reference][node-api-reference]
 - [Debugging with Visual Studio Code][debug-with-vscode]
-- [Use the iothub-explorer command line tool][iothub-explorer]
+- [Use the azure-iot-cli-extension command line tool][azure-iot-cli-extension]
 
 [lnk-setup-iot-hub]: https://aka.ms/howtocreateazureiothub
 [lnk-manage-iot-hub]: https://aka.ms/manageiothub
 [remote-monitoring-pcs]: https://docs.microsoft.com/en-us/azure/iot-suite/iot-suite-remote-monitoring-sample-walkthrough
 [node-api-reference]: https://docs.microsoft.com/en-us/javascript/api/azure-iot-device/
-[iothub-explorer]: https://github.com/azure/iothub-explorer
+[azure-iot-cli-extension]: https://github.com/azure/azure-iot-cli-extension
 [debug-with-vscode]: ../../doc/node-debug-vscode.md
 [node-devbox-setup]: ../../doc/node-devbox-setup.md
 [dm-patterns]: ../../doc/dmpatterns.md
